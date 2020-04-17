@@ -43,7 +43,6 @@ public class LongestSubstringWithoutRepeatingCharacters {
         for(int right = 0; right < s.length(); right ++){
             if (record.containsKey(s.charAt(right))) 
 				left = left > record.get(s.charAt(right)) ? left : record.get(s.charAt(right)) + 1;
-				record.put(s.charAt(right), right);
 			record.put(s.charAt(right), right);
             max = Math.max(max, right - left + 1);
         }
