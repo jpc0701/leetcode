@@ -20,7 +20,7 @@ package leetcode;
  */
 public class LongestPalindromicSubstring {
 	public static void main(String[] args) {
-		System.out.println(solution("cbbd"));
+		System.out.println(solution("babad"));
 	}
 	
     public static String solution(String s) {
@@ -28,16 +28,14 @@ public class LongestPalindromicSubstring {
     	byte[] chars = s.getBytes();
     	int[] temp;
     	int[] temp1 = new int[] {0, 0};
-    	for (int i = 0; i < chars.length - 1; i++) {
-			temp = getPalindromicSubstring(chars, i, i);
-			int long1 = temp[1] - temp[0] + 1;
-			int long2 = temp1[1] - temp1[0] + 1;
-			if (long2 < long1) temp1 = temp;
-			if (chars[i] == chars[i + 1]) {
-				temp = getPalindromicSubstring(chars, i, i + 1);
-				long1 = temp[1] - temp[0] + 1;
-				long2 = temp1[1] - temp1[0] + 1;
-				if (long2 < long1) temp1 = temp;
+    	for (int i = 0; i < chars.length; i++) {
+    		for (int j = i; j < chars.length && j < i + 2; j++) {
+    			temp = getPalindromicSubstring(chars, i, j);
+    			if (temp.length == 2) {
+        			int length = temp[1] - temp[0] + 1;
+        			int length1 = temp1[1] - temp1[0] + 1;
+        			if (length1 < length) temp1 = temp;
+				}
 			}
 		}
     	return new String(chars, temp1[0], temp1[1] - temp1[0] + 1);
