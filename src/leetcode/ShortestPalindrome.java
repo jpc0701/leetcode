@@ -18,7 +18,7 @@ package leetcode;
  */
 public class ShortestPalindrome {
 	public static void main(String[] args) {
-		System.out.println(solution("aacecaaa"));
+		System.out.println(solution1("abcd"));
 	}
 	
     public static String solution(String s) {
@@ -43,6 +43,46 @@ public class ShortestPalindrome {
 			}
 		}
     	byte[] preChars = new byte[chars.length - end1 - 1];
+    	for (int i = 0; i < preChars.length; i++) 
+			preChars[i] = chars[chars.length - 1 - i];
+    	return new String(preChars) + s;
+    }
+    
+    //马拉车
+    public static String solution1(String s) {
+        String tempString = "^";
+        if (s.equals("")) {
+			tempString = "$";
+		} else {
+		    for (int i = 0; i < s.length(); i++)
+		    	tempString += "#" + s.charAt(i);
+		    tempString += "#$";
+		}
+        
+        int center = 0, radius = 0;
+        int n = tempString.length();
+        int[] p = new int[n];
+        for (int i = 1; i < n - 1; i++) {
+			int i_mirror = 2 * center - i;
+			if (i >= radius) p[i] = 0; 
+			else p[i] = Math.min(p[i_mirror], radius - i);
+			while (tempString.charAt(i + p[i] + 1) == tempString.charAt(i - p[i] - 1)) 
+				p[i] ++;
+			if (i + p[i] > radius) {
+				radius = i + p[i];
+				center = i;
+			}
+		}
+        
+        int longest = 0, start, end;
+        for (int i = 0; i < p.length; i++) {
+        	start = (i - p[i]) / 2;
+        	end = start + p[i];
+        	if (start == 0 && end > longest) longest = end;
+        }
+		
+		byte[] chars = s.getBytes();
+    	byte[] preChars = new byte[chars.length - longest];
     	for (int i = 0; i < preChars.length; i++) 
 			preChars[i] = chars[chars.length - 1 - i];
     	return new String(preChars) + s;

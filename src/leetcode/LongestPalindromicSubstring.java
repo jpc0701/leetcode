@@ -20,9 +20,10 @@ package leetcode;
  */
 public class LongestPalindromicSubstring {
 	public static void main(String[] args) {
-		System.out.println(solution("babad"));
+		System.out.println(solution1("cbbd"));
 	}
 	
+	//中心扩展法
     public static String solution(String s) {
     	if (s.length() == 0) return s;
     	byte[] chars = s.getBytes();
@@ -49,5 +50,38 @@ public class LongestPalindromicSubstring {
 				else return temp;
 			} else return new int[] {};
 		} else return new int[] {};
+    }
+    
+    //马拉车
+    public static String solution1(String s) {
+        String tempString = "^";
+        if (s.equals("")) {
+			tempString = "$";
+		} else {
+		    for (int i = 0; i < s.length(); i++)
+		    	tempString += "#" + s.charAt(i);
+		    tempString += "#$";
+		}
+        
+        int center = 0, radius = 0;
+        int n = tempString.length();
+        int[] p = new int[n];
+        for (int i = 1; i < n - 1; i++) {
+			int i_mirror = 2 * center - i;
+			if (i >= radius) p[i] = 0; 
+			else p[i] = Math.min(p[i_mirror], radius - i);
+			while (tempString.charAt(i + p[i] + 1) == tempString.charAt(i - p[i] - 1)) 
+				p[i] ++;
+			if (i + p[i] > radius) {
+				radius = i + p[i];
+				center = i;
+			}
+		}
+        
+        int maxPosition = 0;
+        for (int i = 0; i < p.length; i++) 
+			maxPosition = p[maxPosition] > p[i] ? maxPosition : i;
+		int start = (maxPosition - p[maxPosition]) / 2;
+		return s.substring(start, start + p[maxPosition]);
     }
 }
