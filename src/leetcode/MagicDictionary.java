@@ -1,10 +1,7 @@
 package leetcode;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
-import leetcode.ReplaceWords.Node;
 
 /**
  * 实现一个带有buildDict, 以及 search方法的魔法字典。
